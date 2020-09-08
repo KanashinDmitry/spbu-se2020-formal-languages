@@ -3,10 +3,14 @@ This repository consists of assignments of formal languages theory course in SPB
 
 ## Task 01 
 [![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task01)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
-### Install and run
-Need download libraries:
- - pyformlang (```pip3 install pyformlang```)
- - pygraphblas (install by instructions in https://github.com/michelp/pygraphblas/ or by conda using ```conda install -c conda-forge pygraphblas```) 
- - pytest ( ```pip3 install pytest``` or ```conda install -c conda-forge pytest```)
 
-Run tests by ```pytest```
+The basic tests on automata intersection in ```pyformlang``` and matrix multiplication in ```pygraphblas``` libraries. 
+
+First of all, install package manager [Miniconda](https://docs.conda.io/en/latest/miniconda.html "Miniconda installation"). Then install libraries by following commands:
+ ```
+  conda create -q -n test-environment python=3.8 pygraphblas pytest
+  conda activate test-environment
+  pip install pyformlang 
+ ```
+
+After installation, run tests by ```pytest``` 
