@@ -1,2 +1,2 @@
 # spbu-se2020-formal-languages
-This is repository consisting of assignments of formal languages course in SPBU
+This repository consists of assignments of formal languages theory course in SPBU
