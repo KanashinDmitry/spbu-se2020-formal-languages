@@ -1,6 +1,7 @@
 import pytest
 from pygraphblas import Matrix
 
+
 def test_check_mult():
     row_inds = [0, 0, 1, 1]
     col_inds = [0, 1, 0, 1]

@@ -1,6 +1,7 @@
 import pytest
 from pyformlang.finite_automaton import EpsilonNFA, State, Symbol, Epsilon
 
+
 def test_check_intersection():
     # Declare NFAs
     enfa0 = EpsilonNFA()
