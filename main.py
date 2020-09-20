@@ -10,12 +10,12 @@ def main():
     
     parser.add_argument(
         "graph_path",
-        help=('File with edge list. '
+        help=('Path of file with edge list. '
               'Format: <vertice> <label> <vertice>')
     )
     parser.add_argument(
         "regex_path",
-        help=('File with regexp')
+        help=('Path of file with regexp')
     )
     parser.add_argument(
         "--from_v_path",
