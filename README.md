@@ -1,8 +1,9 @@
 # spbu-se2020-formal-languages
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=master)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
 This repository consists of assignments of formal languages theory course in SPBU
 
 ## Task 01 
-[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task01)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
 
 The basic tests on automata intersection in ```pyformlang``` and matrix multiplication in ```pygraphblas``` libraries. 
 
