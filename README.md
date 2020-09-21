@@ -36,5 +36,5 @@ optional arguments:
   --from_v_path START_VERTICES_PATH
                         Path of file with set of starting vertices.
   --to_v_path END_VERTICES_PATH
-                        Path of file with set of ending (final) vertices set.
+                        Path of file with set of ending (final) vertices.
 ```
