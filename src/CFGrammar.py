@@ -1,16 +1,12 @@
 from pyformlang.cfg import CFG, Variable, Terminal, Production, Epsilon
 from typing import List, Set
 
-class CFGrammar:
-    eps: bool
-    
+class CFGrammar:    
     def __init__(self, name):
         self.cfg = CFGrammar.read_grammar(name)
         self.eps = self.cfg.generate_epsilon()
         self.cnf = self.cfg.to_normal_form()
-        self.wcnf = self.to_weak_cnf()
 
-    #cyk
     def cyk(self, word):
         cfg = self.cnf
         productions = cfg.productions
@@ -46,15 +42,7 @@ class CFGrammar:
         if len(start_symbol_table) != 0: 
             return start_symbol_table == {cfg.start_symbol}
         
-        return False
-
-    def to_weak_cnf(self):
-        cfg = self.cfg
-        return cfg.to_normal_form()
-
-    def is_word_in_cfg_hemming(self, graph):
-        cfg = self.cfg
-        return 0                     
+        return False                    
                         
     @classmethod
     def read_grammar(cls, name):
