@@ -9,18 +9,20 @@ class CFGrammar:
         self.cnf = self.cfg.to_normal_form()
 
     def cyk(self, word):
-        cfg = self.cnf
-        productions = cfg.productions
-
         word_size = len(word)
-        cyk_table: List[List[Set]] = [[set() for _ in range(word_size)] for _ in range(word_size)]
 
         if word_size == 0:
             return self.eps
 
+        cfg = self.cnf
+        productions = cfg.productions
+
+        cyk_table = [[set() for _ in range(word_size)] for _ in range(word_size)]
+
         for index, letter in enumerate(word):
             for production in productions:
-                if production.body == [Terminal(letter)]:
+                if len(production.body) == 1 \
+                   and production.body[0] == Terminal(letter):
                     cyk_table[index][index].add(production.head)
 
         for level in range(1, word_size):
@@ -31,16 +33,19 @@ class CFGrammar:
                 for col_new in range(row, column):
                     row_new = col_new + 1
 
-                    body = cyk_table[row][col_new] | cyk_table[row_new][column]
+                    body_left = cyk_table[row][col_new]
+                    body_right = cyk_table[row_new][column]
 
                     for production in productions:
-                        if set(production.body) == body:
+                        if len(production.body) == 2 \
+                           and production.body[0] in body_left \
+                           and production.body[1] in body_right:
                             cyk_table[row][column].add(production.head)
 
         start_symbol_table = cyk_table[0][word_size - 1]
 
         if len(start_symbol_table) != 0:
-            return start_symbol_table == {cfg.start_symbol}
+            return cfg.start_symbol in start_symbol_table
 
         return False
 

@@ -18,17 +18,16 @@ class Graph:
         edges = self.edges
         reachable_pairs = set()
 
-        # adding buckles
-        for v, terminal, u in edges:
-            for production in query.productions:
-                if v == u and production.body == []:
-                    reachable_pairs.add((production.head, v, v))
+        if cfg.eps:
+            for v in self.vertices:
+                reachable_pairs.add((query.start_symbol, v, v))
 
         query = cfg.cnf
 
         for v, terminal, u in edges:
             for production in query.productions:
-                if production.body == [Terminal(terminal)]:
+                if len(production.body) == 1 \
+                   and production.body[0] == Terminal(terminal):
                     reachable_pairs.add((production.head, v, u))
 
         working_set = reachable_pairs.copy()

@@ -19,7 +19,7 @@ def test_empty_graph():
     assert expected == actual
 
 
-def test_parentheses():
+def test_1():
     edges = read_graph(os.path.join(DATA_PATH, "graph_1.txt"))
     graph = Graph(edges)
     
@@ -33,7 +33,7 @@ def test_parentheses():
 
 
 # palindrome ww^(-1)
-def test_with_buckles():
+def test_2():
     edges = read_graph(os.path.join(DATA_PATH, "graph_2.txt"))
     graph = Graph(edges)
 
@@ -42,5 +42,17 @@ def test_with_buckles():
     actual = set(graph.cfpq(cfg))
 
     expected = set(parse_pairs(os.path.join(DATA_PATH, 'res_2.txt')))
+    
+    assert expected == actual
+
+def test_3():
+    edges = read_graph(os.path.join(DATA_PATH, "graph_3.txt"))
+    graph = Graph(edges)
+
+    cfg = CFGrammar(os.path.join(DATA_PATH, "grammar_3.txt"))
+
+    actual = set(graph.cfpq(cfg))
+
+    expected = set(parse_pairs(os.path.join(DATA_PATH, 'res_3.txt')))
     
     assert expected == actual
