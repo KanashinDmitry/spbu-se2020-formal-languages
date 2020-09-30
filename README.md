@@ -17,7 +17,6 @@ First of all, install package manager [Miniconda](https://docs.conda.io/en/lates
 After installation, run tests by ```python -m pytest``` 
 
 ## Task 02
-[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task02)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
 
 Implementation of automaton intersection via tensor product
 
@@ -37,3 +36,11 @@ optional arguments:
   --to_v_path END_VERTICES_PATH
                         Path of file with set of ending (final) vertices.
 ```
+
+## Task 04
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task04)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Implementation of CYK and Hellings Context-free path querying algorithms.
+You can see CYK realisation in `CFGrammar.py` and Hellings realisation in `Graph.py` both in `src` folder
+
+See installation and tests running instrunctions in <strong>Task 01</strong> section 
