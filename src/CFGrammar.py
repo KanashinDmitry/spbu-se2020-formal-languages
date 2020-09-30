@@ -1,7 +1,8 @@
-from pyformlang.cfg import CFG, Variable, Terminal, Production, Epsilon
+from pyformlang.cfg import CFG, Variable, Terminal, Production
 from typing import List, Set
 
-class CFGrammar:    
+
+class CFGrammar:
     def __init__(self, name):
         self.cfg = CFGrammar.read_grammar(name)
         self.eps = self.cfg.generate_epsilon()
@@ -12,8 +13,8 @@ class CFGrammar:
         productions = cfg.productions
 
         word_size = len(word)
-        cyk_table: List[List[Set]] = [[set() for _ in range(word_size)] for _ in range(word_size) ]
-        
+        cyk_table: List[List[Set]] = [[set() for _ in range(word_size)] for _ in range(word_size)]
+
         if word_size == 0:
             return self.eps
 
@@ -22,12 +23,11 @@ class CFGrammar:
                 if production.body == [Terminal(letter)]:
                     cyk_table[index][index].add(production.head)
 
-      
-        for level in range(1, word_size):      
+        for level in range(1, word_size):
             for production_index in range(word_size - level):
                 row = production_index
                 column = level + production_index
-                
+
                 for col_new in range(row, column):
                     row_new = col_new + 1
 
@@ -39,11 +39,11 @@ class CFGrammar:
 
         start_symbol_table = cyk_table[0][word_size - 1]
 
-        if len(start_symbol_table) != 0: 
+        if len(start_symbol_table) != 0:
             return start_symbol_table == {cfg.start_symbol}
-        
-        return False                    
-                        
+
+        return False
+
     @classmethod
     def read_grammar(cls, name):
         terminals, non_terminals, productions = set(), set(), set()
@@ -54,10 +54,10 @@ class CFGrammar:
 
             for production_txt in productions_txt:
                 head, *body = production_txt.strip().split()
-                
+
                 if start_symb is None:
                     start_symb = Variable(head)
-                
+
                 body_cfg = []
                 for letter in body:
                         if letter.isupper():
@@ -69,11 +69,7 @@ class CFGrammar:
                             terminals.add(terminal)
                             body_cfg.append(terminal)
 
-                #print("Epsilon" if body == [] else body)
-                #print(body == [])
-                #print(Production(Variable(head), [Epsilon()] if body == [] else body_cfg))
-
-                productions.add(Production(Variable(head), [Epsilon()] if body == [] else body_cfg))
+                productions.add(Production(Variable(head), body_cfg))
 
         cfg = CFG(non_terminals, terminals, start_symb, productions)
 
