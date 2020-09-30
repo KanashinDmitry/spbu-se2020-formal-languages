@@ -17,7 +17,6 @@ First of all, install package manager [Miniconda](https://docs.conda.io/en/lates
 After installation, run tests by ```python -m pytest``` 
 
 ## Task 02
-[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task02)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
 
 Implementation of automaton intersection via tensor product
 
