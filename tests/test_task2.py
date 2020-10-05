@@ -7,14 +7,7 @@ from src.Utils import *
 from src.Automaton import Automaton
 from src.Graph import Graph
 
-DATA_PATH = os.path.join(os.getcwd(), 'tests/data/')
-
-
-def parse_expected(name):
-    res_str = read_graph(name)
-    res = list(map(lambda x: (int(x[0]), int(x[1])), res_str))
-    
-    return res 
+DATA_PATH = os.path.join(os.getcwd(), 'tests/data/rpq/')
 
 
 def test_query_all():
@@ -29,7 +22,7 @@ def test_query_all():
 
     res = automaton_graph.reach_all(query_automaton)
 
-    expected = parse_expected(os.path.join(DATA_PATH, 'res_all.txt'))
+    expected = parse_pairs(os.path.join(DATA_PATH, 'res_all.txt'))
 
     assert expected == res
 
@@ -46,7 +39,7 @@ def test_query_from():
 
     res = automaton_graph.reach_from(query_automaton, [0])
 
-    expected = parse_expected(os.path.join(DATA_PATH, 'res_from.txt'))
+    expected = parse_pairs(os.path.join(DATA_PATH, 'res_from.txt'))
 
     assert expected == res
 
@@ -63,7 +56,7 @@ def test_query_from_to():
 
     res = automaton_graph.reach_from_to(query_automaton, [2], [1])
 
-    expected = parse_expected(os.path.join(DATA_PATH, 'res_from_to.txt'))
+    expected = parse_pairs(os.path.join(DATA_PATH, 'res_from_to.txt'))
 
     assert expected == res
 

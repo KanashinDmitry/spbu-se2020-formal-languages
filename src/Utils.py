@@ -21,7 +21,7 @@ def read_regex(name):
 
 def read_vertices(name):
     vertices = read_regex(name).split(' ')
-    
+
     return vertices
 
 
@@ -30,6 +30,18 @@ def read_graph(name):
 
     with open(name, 'r') as file:
         for line in file.readlines():
-            edges.append(tuple(line.rstrip().split(" ")))
+            v_from, label, v_to = line.rstrip().split(" ")
+            edges.append((int(v_from), label, int(v_to)))
 
     return edges
+
+
+def parse_pairs(name):
+    pairs = []
+
+    with open(name, 'r') as file:
+        for line in file.readlines():
+            v_from, v_to = line.rstrip().split(" ")
+            pairs.append((int(v_from), int(v_to)))
+
+    return pairs

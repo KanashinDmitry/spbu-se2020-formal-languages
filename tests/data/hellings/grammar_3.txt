@@ -1,0 +1,6 @@
+S A b B
+A a A
+A 
+B a B
+B b B
+B 
