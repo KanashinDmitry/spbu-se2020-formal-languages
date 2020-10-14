@@ -47,7 +47,7 @@ class AdjMatrix:
 
     @classmethod
     def reachable_vertices(cls, matrix: Matrix):
-        res: Tuple[int, int] = []
+        res = []
 
         for row, col in zip(matrix.rows, matrix.cols):
             res.append((row, col))
