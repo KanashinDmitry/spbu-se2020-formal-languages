@@ -41,6 +41,14 @@ optional arguments:
 [![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task04)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
 
 Implementation of CYK and Hellings Context-free path querying algorithms.
-You can see CYK realisation in `CFGrammar.py` and Hellings realisation in `Graph.py` both in `src` folder
+You can see CYK realisation in `CFGrammar.py` and Hellings realisation in `cfpq.py` both in `src` folder
 
-See installation and tests running instrunctions in <strong>Task 01</strong> section 
+See installation and tests running instrunctions in <strong>Task 01</strong> section
+
+## Task 05
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task05)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Implementation of two cfpq algorithms which could be named as matrix and tensor algorithms.
+You can see both these realisations in `cfpq.py` in `src`
+
+See installation and tests running instrunctions in <strong>Task 01</strong> section
