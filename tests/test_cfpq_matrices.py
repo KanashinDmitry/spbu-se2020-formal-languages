@@ -2,7 +2,7 @@ import os
 from src.Graph import Graph
 from src.CFGrammar import CFGrammar
 from src.Utils import read_graph, parse_pairs
-from src.cfpq import cfpq_hellings
+from src.cfpq import cfpq_matrices
 
 DATA_PATH = os.path.join(os.getcwd(), 'tests/data/cfpq')
 
@@ -13,7 +13,7 @@ def test_empty_graph():
 
     cfg = CFGrammar(os.path.join(DATA_PATH, "grammar_1_parentheses.txt"))
 
-    actual = cfpq_hellings(graph, cfg)
+    actual = cfpq_matrices(graph, cfg)
 
     expected = []
 
@@ -26,7 +26,7 @@ def test_1():
 
     cfg = CFGrammar(os.path.join(DATA_PATH, "grammar_1_parentheses.txt"))
 
-    actual = set(cfpq_hellings(graph, cfg))
+    actual = set(cfpq_matrices(graph, cfg))
 
     expected = set(parse_pairs(os.path.join(DATA_PATH, 'res_1.txt')))
 
@@ -40,7 +40,7 @@ def test_2():
 
     cfg = CFGrammar(os.path.join(DATA_PATH, "grammar_2_palindrome.txt"))
 
-    actual = set(cfpq_hellings(graph, cfg))
+    actual = set(cfpq_matrices(graph, cfg))
 
     expected = set(parse_pairs(os.path.join(DATA_PATH, 'res_2.txt')))
 
@@ -53,7 +53,7 @@ def test_3():
 
     cfg = CFGrammar(os.path.join(DATA_PATH, "grammar_3.txt"))
 
-    actual = set(cfpq_hellings(graph, cfg))
+    actual = set(cfpq_matrices(graph, cfg))
 
     expected = set(parse_pairs(os.path.join(DATA_PATH, 'res_3.txt')))
 
