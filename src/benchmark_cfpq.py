@@ -7,10 +7,10 @@ from src.CFGrammar import CFGrammar
 from src.cfpq import *
 from src.RFA import RFA
 
-REPEAT_TIMES = 3
+REPEAT_TIMES = 1
 
 #DATASETS = ['FullGraph', 'MemoryAliases', 'SparseGraph', 'WorstCase']
-DATASETS = ['FullGraph', 'MemoryAliases']
+DATASETS = ['MemoryAliases']
 HEADER = ['Graph', 'Query', 'Converting to cnf', 'Converting to rfa from file'
           , 'hellings', 'matrices', 'tensor', 'tensor wcnf', 'tensor via rfa directly'
           , 'Number of pairs']
@@ -33,7 +33,7 @@ def init_result_file(path):
 def run_benchmark():
     for data_set in DATASETS:
         directory = os.path.join(DATASET_PATH, data_set)
-        res_path = os.path.join(directory, 'res.csv')
+        res_path = os.path.join(directory, 'res_1.csv')
         init_result_file(res_path)
 
         graphs_directory = os.path.join(directory, GRAPH_DIR)
@@ -69,15 +69,14 @@ def run_benchmark():
                     end = time.time_ns()
                     rfa_time = calculate_time(start, end)
 
-                    for name, cfg, algo in zip(names, [cfg_wrapper] * 5, algorithms):
+                    for name, cfg, algo in zip(names, [cfg_wrapper] * 4 + [rfa], algorithms):
                         start = time.time_ns()
-                        if name == 'tensor_rfa':
-                            results[name] = set(algo(graph, rfa))
-                        else:
-                            results[name] = set(algo(graph, cfg))
+                        results[name] = set(algo(graph, cfg))
                         end = time.time_ns()
+
                         nvals[name] = len(results[name])
                         times[name] = calculate_time(start, end)
+                        
                         print(graph_file_name, grammar_file_name, name, nvals[name], times[name])
 
                     assert results['hellings'] == results['by matrices']

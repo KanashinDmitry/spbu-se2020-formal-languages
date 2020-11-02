@@ -121,7 +121,7 @@ def cfpq_tensor_base(graph: Graph, cfg_wrapper: CFGrammar, is_cnf):
 
     rfa = RFA(query)
                     
-    if cfg_wrapper.eps:
+    if cfg_wrapper.eps and is_cnf:
         res[query.start_symbol] = Matrix.sparse(types.BOOL, graph.vertices_num, graph.vertices_num)
             
         for vertice in graph.vertices:
