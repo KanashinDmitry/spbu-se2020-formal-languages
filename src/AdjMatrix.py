@@ -1,4 +1,4 @@
-from pygraphblas import Matrix, BOOL
+from pygraphblas import Matrix, BOOL, semiring
 from typing import Dict, Tuple, List
 from src.Graph import Graph
 
@@ -40,8 +40,9 @@ class AdjMatrix:
     def merge_label_matrices(cls, matrices: Dict[str, Matrix], num_vertices):
         result_matrix = Matrix.sparse(BOOL, num_vertices, num_vertices)
         
-        for _, matrix in matrices.items(): 
-            result_matrix |= matrix
+        with semiring.LOR_LAND_BOOL:
+            for _, matrix in matrices.items(): 
+                result_matrix += matrix
 
         return result_matrix
 

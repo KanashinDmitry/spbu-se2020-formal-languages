@@ -1,12 +1,14 @@
-from pyformlang.cfg import CFG, Variable, Terminal, Production
+from pyformlang.cfg import CFG, Variable, Terminal, Production, Epsilon
+from pyformlang.regular_expression import Regex
 from typing import List, Set
 
 
 class CFGrammar:
-    def __init__(self, name):
-        self.cfg = CFGrammar.read_grammar(name)
-        self.eps = self.cfg.generate_epsilon()
-        self.cnf = self.cfg.to_normal_form()
+    def __init__(self, name=None):
+        if name is not None:
+            self.cfg = CFGrammar.read_grammar(name)
+            self.eps = self.cfg.generate_epsilon()
+            self.cnf = self.cfg.to_normal_form()
 
     def cyk(self, word):
         word_size = len(word)
@@ -51,7 +53,7 @@ class CFGrammar:
 
     @classmethod
     def read_grammar(cls, name):
-        terminals, non_terminals, productions = set(), set(), set()
+        terminals, variables, productions = set(), set(), set()
         start_symb = None
 
         with open(name, 'r') as file:
@@ -66,9 +68,9 @@ class CFGrammar:
                 body_cfg = []
                 for letter in body:
                         if letter.isupper():
-                            non_terminal = Variable(letter)
-                            non_terminals.add(non_terminal)
-                            body_cfg.append(non_terminal)
+                            variable = Variable(letter)
+                            variables.add(variable)
+                            body_cfg.append(variable)
                         else:
                             terminal = Terminal(letter)
                             terminals.add(terminal)
@@ -76,6 +78,84 @@ class CFGrammar:
 
                 productions.add(Production(Variable(head), body_cfg))
 
-        cfg = CFG(non_terminals, terminals, start_symb, productions)
+        cfg = CFG(variables, terminals, start_symb, productions)        
 
         return cfg
+
+    @classmethod
+    def read_grammar_with_regex(cls, name):
+        id = 0        
+        
+        terminals, variables, productions = set(), set(), set()
+        start_symb = None
+
+        with open(name, 'r') as file:
+            productions_txt = file.readlines()
+
+            for production_txt in productions_txt:
+                line = production_txt.strip().split()
+                head, body = line[0], ' '.join(line[1:])
+                head = Variable(head)
+
+                if start_symb is None:
+                    start_symb = head
+
+                new_productions, new_variables, new_terminals, id = CFGrammar.read_production_regex(head, Regex(body), id)
+                
+                productions |= new_productions
+                variables |= new_variables
+                terminals |= new_terminals
+
+        cfg = CFG(variables, terminals, start_symb, productions)
+
+        return cfg
+
+    @classmethod
+    def read_production_regex(cls, head, regex, id):
+        var_by_state = dict()
+        terminals, variables, productions = set(), set(), set()
+        
+        enfa = regex.to_epsilon_nfa().minimize()
+
+        if len(enfa.states) == 0:
+            variables.add(head)
+            productions.add(Production(head, [Epsilon()]))
+            return productions, variables, terminals, id
+
+        for state in enfa.states:
+            var_by_state[state] = Variable(f'Id{id},{state}')
+            id += 1
+
+        transitions = enfa._transition_function
+              
+        for start_st in enfa.start_states:
+            productions.add(Production(head, [var_by_state[start_st]]))
+
+
+        for st_from, symb, st_to in transitions:
+            new_head = var_by_state[st_from]
+            new_body = []
+
+            value = symb.value
+
+            if value == 'eps':
+                new_body.append(Epsilon())
+            elif value.islower():               
+                terminal = Terminal(value)
+                new_body.append(terminal)
+                terminals.add(terminal)
+            elif value.isupper():
+                variable = Variable(value)
+                new_body.append(variable)
+                variables.add(variable)
+            else:
+                raise ValueError(f'Symbol "{value}" should be either lower or upper case')
+            
+            new_body.append(var_by_state[st_to])
+
+            productions.add(Production(new_head, new_body))
+            
+            if st_to in enfa.final_states:
+                productions.add(Production(var_by_state[st_to], []))
+        
+        return productions, variables, terminals, id
