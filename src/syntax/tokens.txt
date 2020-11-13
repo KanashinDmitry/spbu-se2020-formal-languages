@@ -31,5 +31,4 @@ op_alt = |
 op_concat = .
 terminal = terminal
 variable = variable
-semicolon = ;
 sat = sat
