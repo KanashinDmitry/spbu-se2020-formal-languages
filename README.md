@@ -60,4 +60,4 @@ Implemented syntax and syntax analyzer using CYK algorithm.
 Syntax definition can be found in `src/syntax/syntax.txt` with tokens in `src/syntax/tokens.txt`.
 Syntax analyzer can be found in `src/SyntaxAnalyzer`.
 
-The information about syntax can be found [here](src/syntax/readme.md)
+The information about syntax can be found [here](src/syntax/README.md)
