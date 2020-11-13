@@ -13,48 +13,7 @@ class CFGrammar:
         self.eps = self.cfg.generate_epsilon()
         self.cnf = self.cfg.to_normal_form()
 
-    def cyk(self, word):
-        word_size = len(word)
-
-        if word_size == 0:
-            return self.eps
-
-        cfg = self.cnf
-        productions = cfg.productions
-
-        cyk_table = [[set() for _ in range(word_size)] for _ in range(word_size)]
-
-        for index, letter in enumerate(word):
-            for production in productions:
-                if len(production.body) == 1 \
-                   and production.body[0] == Terminal(letter):
-                    cyk_table[index][index].add(production.head)
-
-        for level in range(1, word_size):
-            for production_index in range(word_size - level):
-                row = production_index
-                column = level + production_index
-
-                for col_new in range(row, column):
-                    row_new = col_new + 1
-
-                    body_left = cyk_table[row][col_new]
-                    body_right = cyk_table[row_new][column]
-
-                    for production in productions:
-                        if len(production.body) == 2 \
-                           and production.body[0] in body_left \
-                           and production.body[1] in body_right:
-                            cyk_table[row][column].add(production.head)
-
-        start_symbol_table = cyk_table[0][word_size - 1]
-
-        if len(start_symbol_table) != 0:
-            return cfg.start_symbol in start_symbol_table
-
-        return False
-
-    def cyk_tokens(self, words, tokens=dict()):
+    def cyk(self, words, tokens=dict()):
         word_size = sum([1 if word in tokens.keys() else len(word) for word in words.split()])
 
         if word_size == 0:

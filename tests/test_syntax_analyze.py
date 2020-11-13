@@ -114,6 +114,6 @@ def test_cfpq(init):
     script, name = init['script'], init['correctness']
     
     if name == 'correct':
-        assert cfg_wrapper.cyk_tokens(script, tokens)
+        assert cfg_wrapper.cyk(script, tokens)
     else:
-        assert not cfg_wrapper.cyk_tokens(script, tokens)
+        assert not cfg_wrapper.cyk(script, tokens)
