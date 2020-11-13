@@ -1,6 +1,6 @@
 # Mini language for graph db queries
 
-#Syntax definiton
+# Syntax definiton
 
 Script consists of queries distinguished by newline or whitespace
 There are 3 queries:
@@ -26,7 +26,7 @@ There are 3 queries:
             - `range ( num , num ) ` - range of vertices
             - `none` - it means that all start or final set consists of all vertices
             
-#Examples
+# Examples
 
 ```
     connect database
