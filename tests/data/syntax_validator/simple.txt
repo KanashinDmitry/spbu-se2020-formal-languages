@@ -1,2 +1,0 @@
-connect database
-select edges graph_name mygraph
