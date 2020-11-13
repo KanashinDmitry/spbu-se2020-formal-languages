@@ -14,7 +14,7 @@ correct_scripts = [
     ''', \
     '''
     connect database
-    select edges from graph_name mygraph intersect ( graph_name mygrapha intersect query grammar )
+    select edges from graph_name my_graph1 intersect ( graph_name mygrapha intersect query grammar )
     ''', \
     '''
     connect database
@@ -110,7 +110,7 @@ def init(request):
     }
 
 
-def test_cfpq(init):
+def test_syntax_analyze(init):
     script, name = init['script'], init['correctness']
     
     if name == 'correct':
