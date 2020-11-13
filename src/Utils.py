@@ -1,5 +1,6 @@
 from pyformlang.finite_automaton import EpsilonNFA
 from pyformlang.regular_expression import Regex
+import os
 
 
 def regex_to_dfa(regex):
@@ -45,3 +46,39 @@ def parse_pairs(name):
             pairs.append((int(v_from), int(v_to)))
 
     return pairs
+
+
+def read_tokens(name):
+    tokens = dict()
+
+    with open(name, 'r') as file:
+        for line in file.readlines():
+            line_n = line.rstrip().split(" ")
+            #print(line_n)
+            token, _, word = line_n
+            tokens[word] = token
+
+    return tokens
+
+
+def read_grammar_with_tokens(name_g, name_t):
+    tokens = read_tokens(name_t)
+
+    with open(name_g, 'r') as file:
+        for line in file.readlines():
+            line_n = line.rstrip().split(" ")
+            print(line_n)
+            head, _, *body = line_n
+            tokens[token] = word
+
+    return 0
+
+
+def main():
+    tokens_name = os.path.join(os.getcwd(), 'src/syntax/tokens.txt')
+    tokens = read_tokens(tokens_name)
+
+    print(tokens)
+
+if __name__ == '__main__':
+    main()
