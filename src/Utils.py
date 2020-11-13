@@ -72,13 +72,3 @@ def read_grammar_with_tokens(name_g, name_t):
             tokens[token] = word
 
     return 0
-
-
-def main():
-    tokens_name = os.path.join(os.getcwd(), 'src/syntax/tokens.txt')
-    tokens = read_tokens(tokens_name)
-
-    print(tokens)
-
-if __name__ == '__main__':
-    main()
