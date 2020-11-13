@@ -33,5 +33,5 @@ There are 3 queries:
     declare S ( terminal ( a ) . terminal ( d ) ) * . ( variable ( C ) ? . terminal ( b ) ) +
     declare C terminal ( c )  
     select filter ( ( vFrom , edge , vTo ) - > is_final vTo ) edges from graph_name mygraph
-    select edges from graph_name mygraph intersect ( set_start_final set ( 2 , 3 ) range ( 2 ) query grammar )    
+    select edges from query grammar intersect ( set_start_final set ( 2 , 3 ) range ( 2 ) graph_name mygraph )    
 ```
