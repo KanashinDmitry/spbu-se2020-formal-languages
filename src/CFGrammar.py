@@ -94,22 +94,7 @@ class CFGrammar:
 
         cfg = CFG(non_terminals, terminals, start_symb, productions)
 
-        return cfg
-
-
-    @classmethod
-    def read_grammar_with_tokens(cls, name_g, name_t):
-        tokens = read_tokens(name_t)
-
-        terminals, non_terminals, productions = set(), set(), set()
-
-        with open(name_g, 'r') as file:
-            productions_txt = file.readlines()
-
-            for production_txt in productions_txt:
-                head, _, *body = production_txt.strip().split()
-                print(head, body)
-                
+        return cfg                
 
     @classmethod
     def read_production_regex(cls, head, regex, id, case_sens=True):
