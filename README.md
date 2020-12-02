@@ -53,6 +53,13 @@ You can see both these realisations in `cfpq.py` in `src`
 
 See installation and tests running instrunctions in <strong>Task 01</strong> section
 
+## Task 06
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task06)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Report for benchmarking CFPQ algorithms can be found in `results_cfpq_benchmark.ipynb`. Exact numerical results can be found at the end of the file.
+
+Script for benchmarking can be found in `src/benchmark_cfpq`. To run this script use `python3 -m src.benchmark_cfpq` from root directory.
+
 ## Task 07
 [![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task07)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
 

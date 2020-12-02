@@ -1,4 +1,5 @@
-from pyformlang.cfg import CFG, Variable, Terminal, Production
+from pyformlang.cfg import CFG, Variable, Terminal, Production, Epsilon
+from pyformlang.regular_expression import Regex
 from typing import List, Set
 from src.Utils import read_tokens
 import os
@@ -67,7 +68,7 @@ class CFGrammar:
 
     @classmethod
     def read_grammar(cls, name):
-        terminals, non_terminals, productions = set(), set(), set()
+        terminals, variables, productions = set(), set(), set()
         start_symb = None
 
         with open(name, 'r') as file:
@@ -82,9 +83,9 @@ class CFGrammar:
                 body_cfg = []
                 for letter in body:
                         if letter.isupper():
-                            non_terminal = Variable(letter)
-                            non_terminals.add(non_terminal)
-                            body_cfg.append(non_terminal)
+                            variable = Variable(letter)
+                            variables.add(variable)
+                            body_cfg.append(variable)
                         else:
                             terminal = Terminal(letter)
                             terminals.add(terminal)
@@ -92,9 +93,37 @@ class CFGrammar:
 
                 productions.add(Production(Variable(head), body_cfg))
 
-        cfg = CFG(non_terminals, terminals, start_symb, productions)
+        cfg = CFG(variables, terminals, start_symb, productions)        
 
-        return cfg                
+        return cfg
+
+    @classmethod
+    def read_grammar_with_regex(cls, name):
+        id = 0        
+        
+        terminals, variables, productions = set(), set(), set()
+        start_symb = None
+
+        with open(name, 'r') as file:
+            productions_txt = file.readlines()
+
+            for production_txt in productions_txt:
+                line = production_txt.strip().split()
+                head, body = line[0], ' '.join(line[1:])
+                head = Variable(head)
+
+                if start_symb is None:
+                    start_symb = head
+
+                new_productions, new_variables, new_terminals, id = CFGrammar.read_production_regex(head, Regex(body), id)
+                
+                productions |= new_productions
+                variables |= new_variables
+                terminals |= new_terminals
+
+        cfg = CFG(variables, terminals, start_symb, productions)
+
+        return cfg
 
     @classmethod
     def read_production_regex(cls, head, regex, id, case_sens=True):
@@ -134,6 +163,7 @@ class CFGrammar:
                 variable = Terminal(value)
                 new_body.append(variable)
                 variables.add(variable)
+
             else:
                 raise ValueError(f'Symbol "{value}" should be either lower or upper case')
             

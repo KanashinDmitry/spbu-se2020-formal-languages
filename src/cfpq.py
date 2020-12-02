@@ -111,20 +111,28 @@ def cfpq_matrices(graph: Graph, cfg_wrapper: CFGrammar):
     return result
 
 
-def cfpq_tensor(graph: Graph, cfg_wrapper: CFGrammar):
+def cfpq_tensor_base(graph: Graph, cfg_wrapper: CFGrammar, is_cnf):
     if graph.vertices_num == 0:
         return []
 
-    query = cfg_wrapper.cfg
-    rfa = RFA(query)
     res = AdjMatrix(graph).M_bin
+
+    query = cfg_wrapper.cnf if is_cnf else cfg_wrapper.cfg
+
+    rfa = RFA(query)
+                    
+    if cfg_wrapper.eps and is_cnf:
+        res[query.start_symbol] = Matrix.sparse(types.BOOL, graph.vertices_num, graph.vertices_num)
+            
+        for vertice in graph.vertices:
+            res[query.start_symbol][vertice, vertice] = True
 
     for production in query.productions:
         label = production.head.value
         if label not in res.keys():
             res[label] = Matrix.sparse(types.BOOL, graph.vertices_num, graph.vertices_num)
 
-        if not production.body:
+        if not (is_cnf or production.body) :
             for vertice in graph.vertices:
                 res[label][vertice, vertice] = True
 
@@ -152,3 +160,52 @@ def cfpq_tensor(graph: Graph, cfg_wrapper: CFGrammar):
     result = [(v_from, v_to) for v_from, v_to, _ in zip(*res[query.start_symbol.value].to_lists())]
 
     return result
+
+
+def cfpq_tensor_with_rfa(graph: Graph, rfa: RFA):
+    if graph.vertices_num == 0:
+        return []
+
+    res = AdjMatrix(graph).M_bin    
+
+    for (st_from, st_to), head in rfa.production_heads.items():
+
+        if head not in res.keys():
+            res[head] = Matrix.sparse(types.BOOL, graph.vertices_num, graph.vertices_num)
+
+        if st_from == st_to:
+           for vertice in graph.vertices:
+                   res[head][vertice, vertice] = True
+
+    changing = True
+    while changing:
+        changing = False
+
+        num_v_intersection = rfa.vertices_num * graph.vertices_num
+
+        intersection = AdjMatrix.adj_kronecker(rfa.matrices, res)
+
+        full_m_intersection = AdjMatrix.merge_label_matrices(intersection, num_v_intersection)
+        closure = AdjMatrix.transitive_closure(full_m_intersection)
+
+        for v_from, v_to in AdjMatrix.reachable_vertices(closure):
+            rfa_from, rfa_to = v_from // graph.vertices_num, v_to // graph.vertices_num
+            graph_from, graph_to = v_from % graph.vertices_num, v_to % graph.vertices_num
+
+            if rfa_from in rfa.start_states and rfa_to in rfa.final_states:
+                label = rfa.production_heads[(rfa_from, rfa_to)]
+                if not res[label].get(graph_from, graph_to, False):
+                    changing = True
+                res[label][graph_from, graph_to] = True
+
+    result = [(v_from, v_to) for v_from, v_to, _ in zip(*res[rfa.start_symbol].to_lists())]
+
+    return result
+
+
+def cfpq_tensor(graph: Graph, cfg_wrapper: CFGrammar):
+    return cfpq_tensor_base(graph, cfg_wrapper, is_cnf=False)
+
+
+def cfpq_tensor_wcnf(graph: Graph, cfg_wrapper: CFGrammar):
+    return cfpq_tensor_base(graph, cfg_wrapper, is_cnf=True)

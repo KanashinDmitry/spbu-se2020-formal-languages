@@ -22,12 +22,13 @@ res_name = ["res_1.txt", "res_2.txt", "res_3.txt"]
         (grammars_name[1], graphs_name[2], algo_name, res_name[1]),
         (grammars_name[2], graphs_name[3], algo_name, res_name[2])
     ]
-    for algo_name in [f'cfpq_{name}' for name in ['hellings', 'matrices', 'tensor']]
+    for algo_name in [f'cfpq_{name}' for name in ['hellings', 'matrices', 'tensor', 'tensor_wcnf', 'tensor_with_rfa']]
 ])))
 def init(request):
     grammar_name, graph_name, algo_name, res_name = request.param
 
     grammar = CFGrammar(os.path.join(DATA_PATH, grammar_name))
+    rfa = RFA.create_from_cfg_regex(os.path.join(DATA_PATH, grammar_name))
 
     graph = Graph(read_graph(os.path.join(DATA_PATH, graph_name)))
 
@@ -35,6 +36,7 @@ def init(request):
 
     return {
         'grammar': grammar,
+        'rfa': rfa,
         'graph': graph,
         'algo': algo_name,
         'expected': expected
@@ -42,7 +44,9 @@ def init(request):
 
 
 def test_cfpq(init):
-    grammar, graph, algo_name, expected = init['grammar'], init['graph'], init['algo'], init['expected']
+    grammar, rfa, graph, algo_name, expected = init['grammar'], init['rfa'], init['graph'], init['algo'], init['expected']
     algo = getattr(cfpq, algo_name)
-    
-    assert set(algo(graph, grammar)) == expected
+    if algo_name == 'cfpq_tensor_with_rfa':
+        assert set(algo(graph, rfa)) == expected
+    else:
+        assert set(algo(graph, grammar)) == expected
