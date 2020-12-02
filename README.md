@@ -52,3 +52,12 @@ Implementation of two cfpq algorithms which could be named as matrix and tensor 
 You can see both these realisations in `cfpq.py` in `src`
 
 See installation and tests running instrunctions in <strong>Task 01</strong> section
+
+## Task 07
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task07)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Implemented syntax and syntax analyzer using CYK algorithm. 
+Syntax definition can be found in `src/syntax/syntax.txt` with tokens in `src/syntax/tokens.txt`.
+Syntax analyzer can be found in `src/SyntaxAnalyzer`.
+
+The information about syntax can be found [here](src/syntax/README.md)
