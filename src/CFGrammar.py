@@ -1,17 +1,21 @@
 from pyformlang.cfg import CFG, Variable, Terminal, Production, Epsilon
 from pyformlang.regular_expression import Regex
 from typing import List, Set
+from src.Utils import read_tokens
+import os
 
 
 class CFGrammar:
-    def __init__(self, name=None):
+    def __init__(self, name=None, cfg=None):
         if name is not None:
             self.cfg = CFGrammar.read_grammar(name)
-            self.eps = self.cfg.generate_epsilon()
-            self.cnf = self.cfg.to_normal_form()
+        elif cfg is not None:
+            self.cfg = cfg
+        self.eps = self.cfg.generate_epsilon()
+        self.cnf = self.cfg.to_normal_form()
 
-    def cyk(self, word):
-        word_size = len(word)
+    def cyk(self, words, tokens=dict()):
+        word_size = sum([1 if word in tokens.keys() else len(word) for word in words.split()])
 
         if word_size == 0:
             return self.eps
@@ -21,11 +25,23 @@ class CFGrammar:
 
         cyk_table = [[set() for _ in range(word_size)] for _ in range(word_size)]
 
-        for index, letter in enumerate(word):
-            for production in productions:
-                if len(production.body) == 1 \
-                   and production.body[0] == Terminal(letter):
-                    cyk_table[index][index].add(production.head)
+        shift = 0
+        for word in words.split():
+            if word in tokens.keys():
+                for production in productions:
+                    if len(production.body) == 1 \
+                    and production.body[0] == Terminal(tokens[word]):
+                        cyk_table[shift][shift].add(production.head)
+                shift += 1
+            else:
+                for index, letter in enumerate(word):
+                    for production in productions:
+                        if len(production.body) == 1 \
+                        and production.body[0] == Terminal(letter):
+                            cyk_table[shift + index][shift + index].add(production.head)
+                shift += len(word)
+            
+        productions_len_2 = [prod for prod in productions if len(prod.body) == 2]
 
         for level in range(1, word_size):
             for production_index in range(word_size - level):
@@ -38,9 +54,8 @@ class CFGrammar:
                     body_left = cyk_table[row][col_new]
                     body_right = cyk_table[row_new][column]
 
-                    for production in productions:
-                        if len(production.body) == 2 \
-                           and production.body[0] in body_left \
+                    for production in productions_len_2:
+                        if production.body[0] in body_left \
                            and production.body[1] in body_right:
                             cyk_table[row][column].add(production.head)
 
@@ -140,14 +155,15 @@ class CFGrammar:
 
             if value == 'eps':
                 new_body.append(Epsilon())
-            elif value.islower():               
-                terminal = Terminal(value)
-                new_body.append(terminal)
-                terminals.add(terminal)
-            elif value.isupper():
+            elif value.isupper() and case_sens:
                 variable = Variable(value)
                 new_body.append(variable)
                 variables.add(variable)
+            elif value.isdigit() or value.islower() or not case_sens:
+                variable = Terminal(value)
+                new_body.append(variable)
+                variables.add(variable)
+
             else:
                 raise ValueError(f'Symbol "{value}" should be either lower or upper case')
             

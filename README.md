@@ -59,3 +59,12 @@ See installation and tests running instrunctions in <strong>Task 01</strong> sec
 Report for benchmarking CFPQ algorithms can be found in `results_cfpq_benchmark.ipynb`. Exact numerical results can be found at the end of the file.
 
 Script for benchmarking can be found in `src/benchmark_cfpq`. To run this script use `python3 -m src.benchmark_cfpq` from root directory.
+
+## Task 07
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task07)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Implemented syntax and syntax analyzer using CYK algorithm. 
+Syntax definition can be found in `src/syntax/syntax.txt` with tokens in `src/syntax/tokens.txt`.
+Syntax analyzer can be found in `src/SyntaxAnalyzer`.
+
+The information about syntax can be found [here](src/syntax/README.md)
