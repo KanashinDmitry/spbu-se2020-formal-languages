@@ -126,7 +126,7 @@ class CFGrammar:
         return cfg
 
     @classmethod
-    def read_production_regex(cls, head, regex, id):
+    def read_production_regex(cls, head, regex, id, case_sens=True):
         var_by_state = dict()
         terminals, variables, productions = set(), set(), set()
         
