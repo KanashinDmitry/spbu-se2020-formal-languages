@@ -1,0 +1,9 @@
+declare "S" ( terminal ( "a" ) . variable ( "S" ) . terminal ( "b" ) ) | epsilon;
+
+connect "database.db";
+    
+select edges 
+    from graph_name "my_graph1" intersect (graph_name "my_graph2" intersect query grammar);
+
+select filter ((vFrom , edge , vTo) - > edge with_label "myLabel" and is_final vTo or is_start vFrom) edges 
+    from graph_name "mygraph";

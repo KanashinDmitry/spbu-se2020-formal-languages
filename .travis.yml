@@ -12,7 +12,11 @@ install:
 
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pygraphblas pytest
   - conda activate test-environment
+  - sudo apt update
+  - sudo apt-get install -y antlr4;
   - pip install -r requirements.txt
 
 script:
+  - cd src/antlr && antlr4 -Dlanguage=Python3 DbQLGrammar.g4 
+  - cd ../../
   - python -m pytest
