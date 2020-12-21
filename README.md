@@ -68,3 +68,35 @@ Syntax definition can be found in `src/syntax/syntax.txt` with tokens in `src/sy
 Syntax analyzer can be found in `src/SyntaxAnalyzer`.
 
 The information about syntax can be found [here](src/syntax/README.md)
+
+## Task 08
+[![Build Status](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages.svg?branch=Task08)](https://travis-ci.com/KanashinDmitry/spbu-se2020-formal-languages)
+
+Added ANTLR grammar for database language. Also added visualization of script's AST.
+### Install
+
+```
+ sudo apt-get update
+ sudo apt-get install antlr4
+ pip install antlr4-python3-runtime
+ cd src/antlr && antlr4 -Dlanguage=Python3 DbQLGrammar.g4 
+ cd ../../
+```
+
+### Using
+To generate DOT file use
+```
+ usage: dot_visualization.py [-h] -s SCRIPT_FILE -o OUTPUT_FILE
+
+ The script visualize input Database script in DOT format
+
+ optional arguments:
+   -h, --help      show this help message and exit
+   -s SCRIPT_FILE  path to script file
+   -o OUTPUT_FILE  path to output DOT file
+```
+### Example
+
+Example: `python -m src.dot_visualization -s=src/syntax/example_script.txt -o=antlr_example_res`
+
+Result of this example can be found [here](https://github.com/KanashinDmitry/spbu-se2020-formal-languages/blob/Task08/antlr_example_res.pdf)
